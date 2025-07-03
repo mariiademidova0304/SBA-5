@@ -17,3 +17,13 @@ body{
     display: flex;
     flex-direction: column;
 }
+
+.input-container .error-message {
+    display: block;
+    color: #e74c3c;
+    /* Red for error messages */
+    font-size: 0.9em;
+    margin-top: 5px;
+    min-height: 1em;
+    /* Reserve space to prevent layout shifts */
+}

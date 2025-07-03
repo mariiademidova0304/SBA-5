@@ -10,7 +10,9 @@
 <body>
     <form id="input-container" class="input-container">
         <input type="text" id="input-title" placeholder="Title" required/>
+        <span class="error-message" id="title-error-message"></span>
         <textarea id="input-content" placeholder="Write your thoughts" required></textarea>
+        <span class="error-message" id="text-error-message"></span>
         <button id="add-post" type="submit">Add Post</button>
     </form>
    <div id="post-list"></div>
