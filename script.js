@@ -28,8 +28,11 @@ inputContent.addEventListener(`blur`, () => {
 
 //event listener for submitting a new post, dynamically creating a new article woth a headline, 
 // a text field and two buttons
-inputForm.addEventListener(`submit`, function (event) {
+inputForm.addEventListener(`submit`, (event) => {
     event.preventDefault();
+    if(!inputForm.checkValidity()){
+        alert(`Please, fill in both Title and Content areas`);
+    }else{
     const newPost = document.createElement(`article`);
     const postTitle = inputTitle.value;
     const postContent = inputContent.value;
@@ -37,6 +40,7 @@ inputForm.addEventListener(`submit`, function (event) {
     postList.appendChild(newPost);
     inputTitle.value = ``;
     inputContent.value = ``;
+    }
 })
 
 //delegating event to the form element to delete the article
