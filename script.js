@@ -34,9 +34,12 @@ inputForm.addEventListener(`submit`, (event) => {
         alert(`Please, fill in both Title and Content areas`);
     }else{
     const newPost = document.createElement(`article`);
+//added unique id and date for a time stamp
+    newPost.id = Date.now().toString(36)+Math.floor(Math.random()).toString(36);
+    let postDate = new Date();
     const postTitle = inputTitle.value;
     const postContent = inputContent.value;
-    newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+    newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
     postList.appendChild(newPost);
     inputTitle.value = ``;
     inputContent.value = ``;
