@@ -13,6 +13,15 @@ function Post(title, content, timestamp) {
     this.postContent = content;
     this.postTime = timestamp;
 }
+
+//checking localStorage on load and rendering existing posts
+window.addEventListener(`load`, () =>{
+ let existingPostsFromStorage = JSON.parse(localStorage.getItem("existingPosts"));
+ if(existingPostsFromStorage){
+    existingPosts = existingPostsFromStorage;
+    //need to create a render posts function
+ }
+})
 //adding custom validity check to the title field
 inputTitle.addEventListener(`blur`, () => {
     if(inputTitle.validity.valueMissing){
@@ -49,10 +58,9 @@ inputForm.addEventListener(`submit`, (event) => {
 //created new object and added it to an array, saved to local storage
     const thisPost = new Post(postTitle,postContent,postDate);
     posts.push(thisPost);
-    console.log(`array:`, posts);
     inputTitle.value = ``;
     inputContent.value = ``;
-    localStorage.setItem("posts", JSON.stringify(posts));
+    localStorage.setItem("existingPosts", JSON.stringify(posts));
     newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
     postList.appendChild(newPost);
         }
