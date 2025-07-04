@@ -46,15 +46,16 @@ inputForm.addEventListener(`submit`, (event) => {
     let postDate = new Date();
     const postTitle = inputTitle.value;
     const postContent = inputContent.value;
-//created new object and added it to an array
+//created new object and added it to an array, saved to local storage
     const thisPost = new Post(postTitle,postContent,postDate);
     posts.push(thisPost);
     console.log(`array:`, posts);
-    newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
-    postList.appendChild(newPost);
     inputTitle.value = ``;
     inputContent.value = ``;
-    }
+    localStorage.setItem("posts", JSON.stringify(posts));
+    newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+    postList.appendChild(newPost);
+        }
 })
 
 //delegating event to the form element to delete the article
