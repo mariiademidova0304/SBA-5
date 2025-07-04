@@ -18,9 +18,15 @@ function Post(title, content, timestamp) {
 window.addEventListener(`load`, () => {
     let existingPostsFromStorage = JSON.parse(localStorage.getItem("existingPosts"));
     if (existingPostsFromStorage) {
-        existingPosts = existingPostsFromStorage;
+        //need to save posts from local storage into my posts array where i could add new posts on submit
+        posts = existingPostsFromStorage;
+        //need to change the string that's currently the value of postTime property to a Date object
+        posts.forEach(post =>{
+        convertedPostTime = new Date(post.postTime);
+        post.postTime = convertedPostTime;
+        })
         //need to create a render posts function
-        renderPosts(existingPosts);
+        renderPosts(posts);
     }
 })
 
@@ -29,7 +35,7 @@ function renderPosts(arr) {
     for (let i = 0; i < arr.length; i++) {
         let existingPost = document.createElement(`article`);
         const post = arr[i];
-        existingPost.innerHTML = `<h2>${post.postTitle}</h2> <p>${post.postContent}</p> <span>${post.postTime}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+        existingPost.innerHTML = `<h2>${post.postTitle}</h2> <p>${post.postContent}</p> <span>${post.postTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
         postList.appendChild(existingPost);
     }
 }
