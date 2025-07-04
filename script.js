@@ -15,18 +15,32 @@ function Post(title, content, timestamp) {
 }
 
 //checking localStorage on load and rendering existing posts
-window.addEventListener(`load`, () =>{
- let existingPostsFromStorage = JSON.parse(localStorage.getItem("existingPosts"));
- if(existingPostsFromStorage){
-    existingPosts = existingPostsFromStorage;
-    //need to create a render posts function
- }
+window.addEventListener(`load`, () => {
+    let existingPostsFromStorage = JSON.parse(localStorage.getItem("existingPosts"));
+    if (existingPostsFromStorage) {
+        existingPosts = existingPostsFromStorage;
+        //need to create a render posts function
+        renderPosts(existingPosts);
+    }
 })
+
+//creating a function that renders an array of posts
+function renderPosts(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        let existingPost = document.createElement(`article`);
+        const post = arr[i];
+        existingPost.innerHTML = `<h2>${post.postTitle}</h2> <p>${post.postContent}</p> <span>${post.postTime}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+        postList.appendChild(existingPost);
+    }
+}
+
+
+
 //adding custom validity check to the title field
 inputTitle.addEventListener(`blur`, () => {
-    if(inputTitle.validity.valueMissing){
-       inputTitle.setCustomValidity(`Please, add a title`);
-    }else{
+    if (inputTitle.validity.valueMissing) {
+        inputTitle.setCustomValidity(`Please, add a title`);
+    } else {
         inputTitle.setCustomValidity(``);
     }
     titleError.textContent = inputTitle.validationMessage;
@@ -34,7 +48,7 @@ inputTitle.addEventListener(`blur`, () => {
 
 //adding custom validity check to the main content area
 inputContent.addEventListener(`blur`, () => {
-    if(inputContent.validity.valueMissing){
+    if (inputContent.validity.valueMissing) {
         inputContent.setCustomValidity(`Please, add your text content`);
     } else {
         inputContent.setCustomValidity(``);
@@ -46,29 +60,29 @@ inputContent.addEventListener(`blur`, () => {
 // a text field and two buttons
 inputForm.addEventListener(`submit`, (event) => {
     event.preventDefault();
-    if(!inputForm.checkValidity()){
+    if (!inputForm.checkValidity()) {
         alert(`Please, fill in both Title and Content areas`);
-    }else{
-    const newPost = document.createElement(`article`);
-//added unique id and date for a time stamp
-    newPost.id = Date.now().toString(36)+Math.floor(Math.random()).toString(36);
-    let postDate = new Date();
-    const postTitle = inputTitle.value;
-    const postContent = inputContent.value;
-//created new object and added it to an array, saved to local storage
-    const thisPost = new Post(postTitle,postContent,postDate);
-    posts.push(thisPost);
-    inputTitle.value = ``;
-    inputContent.value = ``;
-    localStorage.setItem("existingPosts", JSON.stringify(posts));
-    newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
-    postList.appendChild(newPost);
-        }
+    } else {
+        const newPost = document.createElement(`article`);
+        //added unique id and date for a time stamp
+        newPost.id = Date.now().toString(36) + Math.floor(Math.random()).toString(36);
+        let postDate = new Date();
+        const postTitle = inputTitle.value;
+        const postContent = inputContent.value;
+        //created new object and added it to an array, saved to local storage
+        const thisPost = new Post(postTitle, postContent, postDate);
+        posts.push(thisPost);
+        inputTitle.value = ``;
+        inputContent.value = ``;
+        localStorage.setItem("existingPosts", JSON.stringify(posts));
+        newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+        postList.appendChild(newPost);
+    }
 })
 
 //delegating event to the form element to delete the article
-postList.addEventListener(`click`, (event)=>{
-    if(event.target.classList.contains(`delete`)){
+postList.addEventListener(`click`, (event) => {
+    if (event.target.classList.contains(`delete`)) {
         event.target.closest(`article`).remove();
     }
 })
