@@ -6,10 +6,13 @@ const inputForm = document.getElementById(`input-container`);
 const titleError = document.getElementById(`title-error-message`);
 const textError = document.getElementById(`text-error-message`);
 
-//creating empty array and a post object
+//creating empty array and an object type
 let posts = [];
-const post = {};
-
+function Post(title, content, timestamp) {
+    this.postTitle = title;
+    this.postContent = content;
+    this.postTime = timestamp;
+}
 //adding custom validity check to the title field
 inputTitle.addEventListener(`blur`, () => {
     if(inputTitle.validity.valueMissing){
