@@ -6,6 +6,10 @@ const inputForm = document.getElementById(`input-container`);
 const titleError = document.getElementById(`title-error-message`);
 const textError = document.getElementById(`text-error-message`);
 
+//creating empty array and a post object
+let posts = [];
+const post = {};
+
 //adding custom validity check to the title field
 inputTitle.addEventListener(`blur`, () => {
     if(inputTitle.validity.valueMissing){
