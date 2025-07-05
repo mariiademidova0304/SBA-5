@@ -22,9 +22,9 @@ window.addEventListener(`load`, () => {
         //need to save posts from local storage into my posts array where i could add new posts on submit
         posts = existingPostsFromStorage;
         //need to change the string that's currently the value of postTime property to a Date object
-        posts.forEach(post =>{
-        convertedPostTime = new Date(post.postTime);
-        post.postTime = convertedPostTime;
+        posts.forEach(post => {
+            convertedPostTime = new Date(post.postTime);
+            post.postTime = convertedPostTime;
         })
         //need to create a render posts function
         renderPosts(posts);
@@ -74,7 +74,7 @@ inputForm.addEventListener(`submit`, (event) => {
     } else {
         const newPost = document.createElement(`article`);
         //added unique id and date for a time stamp
-        newPost.id = Date.now().toString(36) + Math.floor(Math.random()).toString(36);
+        newPost.id = Date.now().toString(36) + Math.floor(Math.random() * 100).toString(36);
         let postDate = new Date();
         const postTitle = inputTitle.value;
         const postContent = inputContent.value;
@@ -95,12 +95,22 @@ postList.addEventListener(`click`, (event) => {
         //finding the article with delete clicked, then getting it's id
         const deletingPost = event.target.closest(`article`);
         const idToDelete = deletingPost.id;
-        console.log(`id type from article`, typeof idToDelete);
-        console.log(idToDelete);
         //filtering to make a new array that doesn't contain a post with the specified id
         const updatedPosts = posts.filter((post) => post.postId !== idToDelete);
         posts = updatedPosts;
         localStorage.setItem("existingPosts", JSON.stringify(posts));
         deletingPost.remove();
+    }
+})
+//delegating event to the form to listen for edit click
+postList.addEventListener(`click`, (event) => {
+    if (event.target.classList.contains(`edit`)) {
+        //grabbing the article clicked, getting its id and finding the object in the array
+        const editingPostEl = event.target.closest(`article`);
+        const idToEdit = editingPostEl.id;
+        const editingPost = posts.find((post) => post.postId === idToEdit);
+        console.log(editingPost);
+        inputTitle.value = editingPost.postTitle;
+        inputContent.value = editingPost.postContent;
     }
 })
