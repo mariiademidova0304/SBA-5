@@ -36,6 +36,8 @@ function renderPosts(arr) {
     for (let i = 0; i < arr.length; i++) {
         let existingPost = document.createElement(`article`);
         const post = arr[i];
+        //adding id to a post while rendering
+        existingPost.id = post.postId;
         existingPost.innerHTML = `<h2>${post.postTitle}</h2> <p>${post.postContent}</p> <span>${post.postTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
         postList.appendChild(existingPost);
     }
@@ -93,6 +95,8 @@ postList.addEventListener(`click`, (event) => {
         //finding the article with delete clicked, then getting it's id
         const deletingPost = event.target.closest(`article`);
         const idToDelete = deletingPost.id;
+        console.log(`id type from article`, typeof idToDelete);
+        console.log(idToDelete);
         //filtering to make a new array that doesn't contain a post with the specified id
         const updatedPosts = posts.filter((post) => post.postId !== idToDelete);
         posts = updatedPosts;
