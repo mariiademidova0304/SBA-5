@@ -90,6 +90,13 @@ inputForm.addEventListener(`submit`, (event) => {
 //delegating event to the form element to delete the article
 postList.addEventListener(`click`, (event) => {
     if (event.target.classList.contains(`delete`)) {
-        event.target.closest(`article`).remove();
+        //finding the article with delete clicked, then getting it's id
+        const deletingPost = event.target.closest(`article`);
+        const idToDelete = deletingPost.id;
+        //filtering to make a new array that doesn't contain a post with the specified id
+        const updatedPosts = posts.filter((post) => post.postId !== idToDelete);
+        posts = updatedPosts;
+        localStorage.setItem("existingPosts", JSON.stringify(posts));
+        deletingPost.remove();
     }
 })
