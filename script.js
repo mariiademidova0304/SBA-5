@@ -8,10 +8,11 @@ const textError = document.getElementById(`text-error-message`);
 
 //creating empty array and an object type
 let posts = [];
-function Post(title, content, timestamp) {
+function Post(title, content, timestamp, id) {
     this.postTitle = title;
     this.postContent = content;
     this.postTime = timestamp;
+    this.postId = id;
 }
 
 //checking localStorage on load and rendering existing posts
@@ -76,7 +77,7 @@ inputForm.addEventListener(`submit`, (event) => {
         const postTitle = inputTitle.value;
         const postContent = inputContent.value;
         //created new object and added it to an array, saved to local storage
-        const thisPost = new Post(postTitle, postContent, postDate);
+        const thisPost = new Post(postTitle, postContent, postDate, newPost.id);
         posts.push(thisPost);
         inputTitle.value = ``;
         inputContent.value = ``;
