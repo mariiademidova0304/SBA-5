@@ -67,8 +67,14 @@ inputContent.addEventListener(`blur`, () => {
 
 //event listener for submitting a new post, dynamically creating a new article woth a headline, 
 // a text field and two buttons
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////saving this code to try things in a copy of it/////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 inputForm.addEventListener(`submit`, (event) => {
     event.preventDefault();
+    
     if (!inputForm.checkValidity()) {
         alert(`Please, fill in both Title and Content areas`);
     } else {
@@ -88,6 +94,32 @@ inputForm.addEventListener(`submit`, (event) => {
         postList.appendChild(newPost);
     }
 })
+////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////copy of the code/////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+// inputForm.addEventListener(`submit`, (event) => {
+//     event.preventDefault();
+//     if (!inputForm.checkValidity()) {
+//         alert(`Please, fill in both Title and Content areas`);
+//     } else {
+//         const newPost = document.createElement(`article`);
+//         //added unique id and date for a time stamp
+//         newPost.id = Date.now().toString(36) + Math.floor(Math.random() * 100).toString(36);
+//         let postDate = new Date();
+//         const postTitle = inputTitle.value;
+//         const postContent = inputContent.value;
+//         //created new object and added it to an array, saved to local storage
+//         const thisPost = new Post(postTitle, postContent, postDate, newPost.id);
+//         posts.push(thisPost);
+//         inputTitle.value = ``;
+//         inputContent.value = ``;
+//         localStorage.setItem("existingPosts", JSON.stringify(posts));
+//         newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+//         postList.appendChild(newPost);
+//     }
+// })
+/////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 
 //delegating event to the form element to delete the article
 postList.addEventListener(`click`, (event) => {
@@ -102,7 +134,8 @@ postList.addEventListener(`click`, (event) => {
         deletingPost.remove();
     }
 })
-//delegating event to the form to listen for edit click
+//delegating event to the form to listen for edit click/////////////////////////////////////
+///not really working, i need to understand how to make submit button act 2 different ways//
 postList.addEventListener(`click`, (event) => {
     if (event.target.classList.contains(`edit`)) {
         //grabbing the article clicked, getting its id and finding the object in the array
@@ -112,5 +145,18 @@ postList.addEventListener(`click`, (event) => {
         console.log(editingPost);
         inputTitle.value = editingPost.postTitle;
         inputContent.value = editingPost.postContent;
+        addPostButton.innerText = "Save Changes";
+        ////////////////////////////not working part/////////////////////////////////////
+        inputForm.addEventListener(`submit`, (event) => {
+            event.preventDefault();
+            if (!inputForm.checkValidity()) {
+                alert(`Please, fill in both Title and Content areas`);
+            } else {
+                const updatedTitle = inputTitle.value;
+                const updatedContent = inputContent.value;
+                const updatedTime = new Date();
+                editingPostEl.innerHTML = `<h2>${updatedTitle}</h2> <p>${updatedContent}</p> <span>Updated: ${updatedTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+            }
+        })
     }
 })
