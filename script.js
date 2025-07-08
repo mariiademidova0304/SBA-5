@@ -74,24 +74,49 @@ inputContent.addEventListener(`blur`, () => {
 //////////////////////////////////////////////////////////////////////////////////////
 inputForm.addEventListener(`submit`, (event) => {
     event.preventDefault();
-    
-    if (!inputForm.checkValidity()) {
-        alert(`Please, fill in both Title and Content areas`);
+    const actionData = inputForm.getAttribute(`data-action`);
+    if (actionData === `add`) {
+        if (!inputForm.checkValidity()) {
+            alert(`Please, fill in both Title and Content areas`);
+        } else {
+            const newPost = document.createElement(`article`);
+            //added unique id and date for a time stamp
+            newPost.id = Date.now().toString(36) + Math.floor(Math.random() * 100).toString(36);
+            let postDate = new Date();
+            const postTitle = inputTitle.value;
+            const postContent = inputContent.value;
+            //created new object and added it to an array, saved to local storage
+            const thisPost = new Post(postTitle, postContent, postDate, newPost.id);
+            posts.push(thisPost);
+            inputTitle.value = ``;
+            inputContent.value = ``;
+            localStorage.setItem("existingPosts", JSON.stringify(posts));
+            newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+            postList.appendChild(newPost);
+        }
+    //if the data-action is not set to add, it's set to edit, so we're writing actions for that
     } else {
-        const newPost = document.createElement(`article`);
-        //added unique id and date for a time stamp
-        newPost.id = Date.now().toString(36) + Math.floor(Math.random() * 100).toString(36);
-        let postDate = new Date();
-        const postTitle = inputTitle.value;
-        const postContent = inputContent.value;
-        //created new object and added it to an array, saved to local storage
-        const thisPost = new Post(postTitle, postContent, postDate, newPost.id);
-        posts.push(thisPost);
-        inputTitle.value = ``;
-        inputContent.value = ``;
-        localStorage.setItem("existingPosts", JSON.stringify(posts));
-        newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
-        postList.appendChild(newPost);
+        if (!inputForm.checkValidity()) {
+            alert(`Please, fill in both Title and Content areas`);
+        } else {
+            //saving values from the fields again
+            const updatedTitle = inputTitle.value;
+            const updatedContent = inputContent.value;
+            const updatedTime = new Date();
+            //getting the id of the post that we've been editing - from the form where we saved it temporarily
+            const editingPostId = inputForm.getAttribute(`data-post-id`);
+            //finding the object we're working on and updating its properties
+            const editingPost = posts.find((post) => post.postId === editingPostId);
+            editingPost.postTitle = updatedTitle;
+            editingPost.postContent = updatedContent;
+            editingPost.postTime = updatedTime;
+            //updating local storage after we changed the properties
+            localStorage.setItem("existingPosts", JSON.stringify(posts));
+            //findinf the article we need to edit
+            const editingPostEl = document.getElementById(`${editingPostId}`);
+            editingPostEl.innerHTML = `<h2>${updatedTitle}</h2> <p>${updatedContent}</p> <span>Updated: ${updatedTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+        }
+
     }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,21 +167,24 @@ postList.addEventListener(`click`, (event) => {
         const editingPostEl = event.target.closest(`article`);
         const idToEdit = editingPostEl.id;
         const editingPost = posts.find((post) => post.postId === idToEdit);
-        console.log(editingPost);
         inputTitle.value = editingPost.postTitle;
         inputContent.value = editingPost.postContent;
         addPostButton.innerText = "Save Changes";
+        //adding data to form so that we could switch from adding to editing and keep the id of the post
+        inputForm.dataset.action = `edit`;
+        inputForm.setAttribute(`data-post-id`, `${idToEdit}`);
+        console.log(`inputform attribute id is`, inputForm.dataset.post-id);
         ////////////////////////////not working part/////////////////////////////////////
-        inputForm.addEventListener(`submit`, (event) => {
-            event.preventDefault();
-            if (!inputForm.checkValidity()) {
-                alert(`Please, fill in both Title and Content areas`);
-            } else {
-                const updatedTitle = inputTitle.value;
-                const updatedContent = inputContent.value;
-                const updatedTime = new Date();
-                editingPostEl.innerHTML = `<h2>${updatedTitle}</h2> <p>${updatedContent}</p> <span>Updated: ${updatedTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
-            }
-        })
+        // inputForm.addEventListener(`submit`, (event) => {
+        //     event.preventDefault();
+        //     if (!inputForm.checkValidity()) {
+        //         alert(`Please, fill in both Title and Content areas`);
+        //     } else {
+        //         const updatedTitle = inputTitle.value;
+        //         const updatedContent = inputContent.value;
+        //         const updatedTime = new Date();
+        //         editingPostEl.innerHTML = `<h2>${updatedTitle}</h2> <p>${updatedContent}</p> <span>Updated: ${updatedTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+        //     }
+        // })
     }
 })
