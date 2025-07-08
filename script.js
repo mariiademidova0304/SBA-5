@@ -115,36 +115,14 @@ inputForm.addEventListener(`submit`, (event) => {
             //findinf the article we need to edit
             const editingPostEl = document.getElementById(`${editingPostId}`);
             editingPostEl.innerHTML = `<h2>${updatedTitle}</h2> <p>${updatedContent}</p> <span>Updated: ${updatedTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+            inputTitle.value = ``;
+            inputContent.value =``;
+            addPostButton.innerText = `Add Post`;
+            inputForm.dataset.action = `add`;
         }
 
     }
 })
-////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////copy of the code/////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
-// inputForm.addEventListener(`submit`, (event) => {
-//     event.preventDefault();
-//     if (!inputForm.checkValidity()) {
-//         alert(`Please, fill in both Title and Content areas`);
-//     } else {
-//         const newPost = document.createElement(`article`);
-//         //added unique id and date for a time stamp
-//         newPost.id = Date.now().toString(36) + Math.floor(Math.random() * 100).toString(36);
-//         let postDate = new Date();
-//         const postTitle = inputTitle.value;
-//         const postContent = inputContent.value;
-//         //created new object and added it to an array, saved to local storage
-//         const thisPost = new Post(postTitle, postContent, postDate, newPost.id);
-//         posts.push(thisPost);
-//         inputTitle.value = ``;
-//         inputContent.value = ``;
-//         localStorage.setItem("existingPosts", JSON.stringify(posts));
-//         newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
-//         postList.appendChild(newPost);
-//     }
-// })
-/////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////
 
 //delegating event to the form element to delete the article
 postList.addEventListener(`click`, (event) => {
@@ -173,18 +151,5 @@ postList.addEventListener(`click`, (event) => {
         //adding data to form so that we could switch from adding to editing and keep the id of the post
         inputForm.dataset.action = `edit`;
         inputForm.setAttribute(`data-post-id`, `${idToEdit}`);
-        console.log(`inputform attribute id is`, inputForm.dataset.post-id);
-        ////////////////////////////not working part/////////////////////////////////////
-        // inputForm.addEventListener(`submit`, (event) => {
-        //     event.preventDefault();
-        //     if (!inputForm.checkValidity()) {
-        //         alert(`Please, fill in both Title and Content areas`);
-        //     } else {
-        //         const updatedTitle = inputTitle.value;
-        //         const updatedContent = inputContent.value;
-        //         const updatedTime = new Date();
-        //         editingPostEl.innerHTML = `<h2>${updatedTitle}</h2> <p>${updatedContent}</p> <span>Updated: ${updatedTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
-        //     }
-        // })
     }
 })
