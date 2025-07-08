@@ -65,13 +65,8 @@ inputContent.addEventListener(`blur`, () => {
     textError.textContent = inputContent.validationMessage;
 })
 
-//event listener for submitting a new post, dynamically creating a new article woth a headline, 
+//event listener for submitting a new post, dynamically creating a new article with a headline, 
 // a text field and two buttons
-
-
-////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////saving this code to try things in a copy of it/////////////////
-//////////////////////////////////////////////////////////////////////////////////////
 inputForm.addEventListener(`submit`, (event) => {
     event.preventDefault();
     const actionData = inputForm.getAttribute(`data-action`);
@@ -94,7 +89,7 @@ inputForm.addEventListener(`submit`, (event) => {
             newPost.innerHTML = `<h2>${postTitle}</h2> <p>${postContent}</p> <span>${postDate.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
             postList.appendChild(newPost);
         }
-    //if the data-action is not set to add, it's set to edit, so we're writing actions for that
+    //if the data-action is not set to add, it's set to edit, so we're writing actions for editing process and saving changes
     } else {
         if (!inputForm.checkValidity()) {
             alert(`Please, fill in both Title and Content areas`);
@@ -114,7 +109,9 @@ inputForm.addEventListener(`submit`, (event) => {
             localStorage.setItem("existingPosts", JSON.stringify(posts));
             //findinf the article we need to edit
             const editingPostEl = document.getElementById(`${editingPostId}`);
+            // coudln't keep the updated: on page load and not mess with the object's data, might need something else to add it when the post was edited
             editingPostEl.innerHTML = `<h2>${updatedTitle}</h2> <p>${updatedContent}</p> <span>Updated: ${updatedTime.toLocaleString('en-US')}</span> <div><button class="edit">Edit</button><button class="delete">Delete</button></div>`;
+            //clearing the input fields and changing the button back
             inputTitle.value = ``;
             inputContent.value =``;
             addPostButton.innerText = `Add Post`;
